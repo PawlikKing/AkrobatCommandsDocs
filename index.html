@@ -3,136 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatsound docs</title>
+    <title>Chatsounds List</title>
     <style>
+        :root {
+            --bg: #2c2f33;
+            --card: #36393f;
+            --border: #40444b;
+            --text: #e0e0e0;
+            --accent: #7289da;
+            --accent-hover: #5a6ec4;
+            --green: #43b581;
+            --purple: #5865f2;
+            --btn-bg: #40444b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #2c2f33;
-            color: #e0e0e0;
+            background: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 20px 16px;
+            padding: 16px;
             line-height: 1.5;
+            font-size: 16px;
         }
+
         header {
             text-align: center;
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
         }
+
         h1 {
-            color: #fff;
+            color: white;
             margin: 0.4em 0;
-            font-size: 2.1rem;
+            font-size: clamp(1.9rem, 5.5vw, 2.6rem);
         }
+
         .intro {
             color: #b9bbbe;
-            max-width: 640px;
-            margin: 0 auto 1.8rem;
-            text-align: center;
+            max-width: 720px;
+            margin: 0 auto;
         }
+
         code {
             font-family: 'Consolas', monospace;
             background: #23272a;
-            padding: 0.15em 0.4em;
-            border-radius: 4px;
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
             color: #f0f0f0;
         }
 
-        .tabs {
+        .navbar {
+            display: none;
+            background-color: #27292e;
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid #57595d;
+            margin: 0 auto;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+
+        .navbar-inner {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
             justify-content: center;
-            margin-bottom: 1.8rem;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 0 16px;
         }
-        .tab {
-            background: #36393f;
-            border: 1px solid #40444b;
+
+        .navbar a {
             color: #dcddde;
-            padding: 0.65rem 1.3rem;
-            border-radius: 6px 6px 0 0;
-            cursor: pointer;
+            text-align: center;
+            padding: 14px 24px;
+            text-decoration: none;
+            font-size: 1.05rem;
             font-weight: 500;
-            transition: all 0.13s;
-            user-select: none;
+            transition: all 0.15s;
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            top: 1px;
         }
-        .tab:hover {
-            background: #40444b;
+
+        .navbar a:hover {
+            color: var(--accent-hover);
         }
-        .tab.active {
-            background: #7289da;
+
+        .navbar a.active {
+            color: var(--accent);
+        }
+
+        .category-header {
+            background: #36393f;
+            color: #dcddde;
+            padding: 14px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 1.2rem 0 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.15s;
+        }
+
+        .category-header:hover {
+            background: var(--accent-hover);
             color: white;
-            border-color: #7289da;
         }
-        .tab-container {
-            overflow-x: auto;
-            padding-bottom: 0.4rem;
+
+        .category-header.active {
+            background: var(--accent);
+            color: white;
         }
 
         .category-content {
-            max-width: 900px;
-            margin: 0 auto;
             display: none;
-            background: #36393f;
-            border-radius: 8px;
+            background: var(--card);
+            border-radius: 0 0 8px 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
         .category-content.active {
             display: block;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #2f3136;
-        }
-        th, td {
-            padding: 0.9rem 1.3rem;
-            text-align: left;
-            border-bottom: 1px solid #40444b;
-        }
-        th {
-            background: #27292e;
-            color: #dcddde;
-            font-weight: 600;
-            width: 40%;
-        }
-        td {
-            color: #dcddde;
-        }
-        .command {
-            color: #43b581;
-            font-weight: 500;
-        }
-        .copy-btn {
-            background: #40444b;
-            border: 1px solid #555;
-            color: #dcddde;
-            padding: 0.35em 0.7em;
-            border-radius: 4px;
+
+        .item, tr.table-row {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
-            font-size: 0.85rem;
-            margin-left: 0.8rem;
-            transition: all 0.13s;
-        }
-        .copy-btn:hover {
-            background: #4f545c;
-            border-color: #7289da;
-        }
-        .copy-btn.copied {
-            background: #43b581;
-            border-color: #43b581;
-            color: #fff;
+            transition: background 0.14s;
         }
 
-        @media (max-width: 600px) {
-            .tabs {
-                justify-content: flex-start;
+        .item:hover, tr.table-row:hover {
+            background: #40444b;
+        }
+
+        .item:last-child, tr.table-row:last-child {
+            border-bottom: none;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            gap: 12px;
+        }
+
+        .name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .points {
+            color: white;
+            font-size: 0.92rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .command-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .command {
+            color: var(--green);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--btn-bg);
+            color: #dcddde;
+            padding: 0.45em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.14s;
+            min-width: 76px;
+            text-align: center;
+        }
+
+        .copy-btn:hover {
+            background: #4f545c;
+        }
+
+        .copy-btn.copied {
+            background: var(--green);
+            color: white;
+        }
+
+        @media (min-width: 980px) {
+            .navbar {
+                display: block;
             }
-            .tab {
-                padding: 0.6rem 1.1rem;
-                font-size: 0.95rem;
+
+            .accordion {
+                display: none;
+            }
+
+            .content-area {
+                background: var(--card);
+                border-radius: 0 0 8px 8px;
+                overflow: hidden;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: #2f3136;
+            }
+
+            th, td {
+                padding: 1rem 1.5rem;
+                text-align: left;
+            }
+
+            th {
+                background: #27292e;
+                color: #dcddde;
+                font-weight: 600;
+            }
+
+            th:nth-child(1) { width: 45%; }
+            th:nth-child(2) { width: 30%; }
+            th:nth-child(3) { width: 25%; text-align: center; }
+
+            .command-cell {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .copy-btn {
+                margin-left: auto;
+            }
+
+            .points {
+                color: var(--accent);
+            }
+        }
+
+        @media (max-width: 979px) {
+            .content-area {
+                display: none;
+            }
+
+            .points {
+                background: var(--purple);
+                padding: 0.35em 0.9em;
+                border-radius: 1.2rem;
             }
         }
     </style>
@@ -140,163 +269,215 @@
 <body>
 
     <header>
-        <h1>Chatsounds Commands</h1>
+        <h1>Chatsounds List</h1>
         <p class="intro">
-            Prefix: <code>!redeem</code> + sound name<br>
-            Click row or "Copy" button to copy command
+            Select category • Click row or "Copy" to copy command<br>
         </p>
     </header>
 
-    <div class="tab-container">
-        <div class="tabs" id="tabs"></div>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner" id="navbarInner"></div>
+    </nav>
+
+    <div class="accordion" id="accordion"></div>
+
+    <div class="content-area" id="contentArea">
+        <table>
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Sound</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
 
-    <div id="content"></div>
-
     <script>
-        const sounds = [
-            { name: 'ace',        category: 'people'   },
-            { name: 'amy',        category: 'people'   },
-            { name: 'cartmen',    category: 'fun'      },
-            { name: 'goulash',    category: 'people'   },
-            { name: 'michael',    category: 'fun'      },
-            { name: 'peter',      category: 'fun'      },
-            { name: 'randy',      category: 'people'   },
-            { name: 'stewie',     category: 'fun'      },
-            { name: 'buddy',      category: 'fun'      },
-            { name: 'heyamy',     category: 'welcome'  },
-            { name: 'heydork',    category: 'welcome'  },
-            { name: 'heyfrodo',   category: 'welcome'  },
-            { name: 'heygoulash', category: 'welcome'  },
-            { name: 'mmmgoulash', category: 'people'   },
-            { name: 'heykris',    category: 'welcome'  },
-            { name: 'heytwirm',   category: 'welcome'  },
-            { name: 'partizan',   category: 'fun'      },
-            { name: 'precious',   category: 'random'   },
-            { name: 'disbelief',  category: 'random'   },
-            { name: 'desk',       category: 'random'   },
-            { name: 'hello',      category: 'random'   },
-            { name: 'nice',       category: 'random'   },
-            { name: 'bah',        category: 'random'   },
-            { name: 'calm',       category: 'random'   },
-            { name: 'whocares',   category: 'random'   },
-            { name: 'bomb',       category: 'scare'    },
-            { name: 'grenade',    category: 'scare'    },
-            { name: 'fbi',        category: 'scare'    },
-            { name: 'fightme',    category: 'random'   },
-            { name: 'desksmash',  category: 'random'   },
-            { name: 'crickets',   category: 'fun'      },
-            { name: 'hot',        category: 'fun'      },
-            { name: 'retard',     category: 'random'   },
-            { name: '50cal',      category: 'scare'    },
-            { name: 'pistol',     category: 'scare'    },
-            { name: 'knock',      category: 'scare'    },
-            { name: 'fly',        category: 'fun'      },
-            { name: 'wah',        category: 'fun'      },
-            { name: 'meow',       category: 'fun'      },
-            { name: 'fart',       category: 'fun'      },
-            { name: 'takataka',   category: 'fun'      },
-            { name: 'turtle',     category: 'fun'      },
-            { name: 'gaming',     category: 'fun'      },
-            { name: 'gameover',   category: 'fun'      },
-            { name: 'nope',       category: 'random'   },
-            { name: 'gotcha',     category: 'fun'      },
-            { name: 'jobs',       category: 'fun'      },
-            { name: 'mexicans',   category: 'fun'      },
-            { name: 'dumbass',    category: 'fun'      },
-            { name: 'dicks',      category: 'fun'      }
-        ];
+const sounds = [
+    { name: 'ace',        category: 'people'   },
+    { name: 'amy',        category: 'people'   },
+    { name: 'goulash',    category: 'people'   },
+    { name: 'randy',      category: 'people'   },
+    { name: 'mmmgoulash', category: 'people'   },
+    { name: 'cartmen',    category: 'fun'      },
+    { name: 'michael',    category: 'fun'      },
+    { name: 'peter',      category: 'fun'      },
+    { name: 'stewie',     category: 'fun'      },
+    { name: 'buddy',      category: 'fun'      },
+    { name: 'partizan',   category: 'fun'      },
+    { name: 'crickets',   category: 'fun'      },
+    { name: 'hot',        category: 'fun'      },
+    { name: 'fly',        category: 'fun'      },
+    { name: 'wah',        category: 'fun'      },
+    { name: 'meow',       category: 'fun'      },
+    { name: 'fart',       category: 'fun'      },
+    { name: 'takataka',   category: 'fun'      },
+    { name: 'turtle',     category: 'fun'      },
+    { name: 'gaming',     category: 'fun'      },
+    { name: 'gameover',   category: 'fun'      },
+    { name: 'gotcha',     category: 'fun'      },
+    { name: 'jobs',       category: 'fun'      },
+    { name: 'mexicans',   category: 'fun'      },
+    { name: 'dumbass',    category: 'fun'      },
+    { name: 'dicks',      category: 'fun'      },
+    { name: 'heyamy',     category: 'welcome'  },
+    { name: 'heydork',    category: 'welcome'  },
+    { name: 'heyfrodo',   category: 'welcome'  },
+    { name: 'heygoulash', category: 'welcome'  },
+    { name: 'heykris',    category: 'welcome'  },
+    { name: 'heytwirm',   category: 'welcome'  },
+    { name: 'precious',   category: 'random'   },
+    { name: 'disbelief',  category: 'random'   },
+    { name: 'desk',       category: 'random'   },
+    { name: 'hello',      category: 'random'   },
+    { name: 'nice',       category: 'random'   },
+    { name: 'bah',        category: 'random'   },
+    { name: 'calm',       category: 'random'   },
+    { name: 'whocares',   category: 'random'   },
+    { name: 'fightme',    category: 'random'   },
+    { name: 'desksmash',  category: 'random'   },
+    { name: 'retard',     category: 'random'   },
+    { name: 'nope',       category: 'random'   },
+    { name: 'bomb',       category: 'scare'    },
+    { name: 'grenade',    category: 'scare'    },
+    { name: 'fbi',        category: 'scare'    },
+    { name: '50cal',      category: 'scare'    },
+    { name: 'pistol',     category: 'scare'    },
+    { name: 'knock',      category: 'scare'    }
+];
 
-        const categories = [...new Set(sounds.map(s => s.category))].sort();
-        const tabsContainer = document.getElementById('tabs');
-        const contentContainer = document.getElementById('content');
+const groups = {};
+sounds.forEach(s => {
+    if (!groups[s.category]) groups[s.category] = [];
+    groups[s.category].push(s);
+});
 
-        categories.forEach((cat, index) => {
-            const tab = document.createElement('div');
-            tab.className = 'tab';
-            tab.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-            tab.dataset.category = cat;
-            if (index === 0) tab.classList.add('active');
-            tabsContainer.appendChild(tab);
-        });
+const categories = Object.keys(groups).sort();
 
-        categories.forEach(cat => {
-            const section = document.createElement('div');
-            section.className = 'category-content';
-            section.dataset.category = cat;
+const navbarInner = document.getElementById('navbarInner');
+const accordion = document.getElementById('accordion');
+const tableBody = document.getElementById('tableBody');
 
-            const table = document.createElement('table');
-            const thead = document.createElement('thead');
-            thead.innerHTML = `<tr><th>Command</th><th>Sound</th></tr>`;
-            table.appendChild(thead);
+let activeCat = categories[0];
 
-            const tbody = document.createElement('tbody');
-            sounds
-                .filter(s => s.category === cat)
-                .forEach(s => {
-                    const commandText = `!redeem ${s.name}`;
+categories.forEach((cat, i) => {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+    if (i === 0) a.classList.add('active');
+    navbarInner.appendChild(a);
 
-                    const row = document.createElement('tr');
-                    row.style.cursor = 'pointer';
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        navbarInner.querySelectorAll('a').forEach(link => link.classList.remove('active'));
+        a.classList.add('active');
+        showCategory(cat, true);
+    });
+});
 
-                    const tdCommand = document.createElement('td');
-                    tdCommand.innerHTML = `<code class="command">${commandText}</code>`;
+categories.forEach((cat, i) => {
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.innerHTML = `${cat.charAt(0).toUpperCase() + cat.slice(1)} <span>▼</span>`;
 
-                    const copyBtn = document.createElement('button');
-                    copyBtn.className = 'copy-btn';
-                    copyBtn.textContent = 'Copy';
-                    copyBtn.addEventListener('click', e => {
-                        e.stopPropagation();
-                        copyToClipboard(commandText, copyBtn);
-                    });
+    const content = document.createElement('div');
+    content.className = 'category-content';
 
-                    tdCommand.appendChild(copyBtn);
+    groups[cat].forEach(s => {
+        const cmd = `!redeem ${s.name}`;
+        const item = document.createElement('div');
+        item.className = 'item';
+        item.innerHTML = `
+            <div class="top-row">
+                <span class="name">${s.name}</span>
+                <span class="points">1000 pts</span>
+            </div>
+            <div class="command-row">
+                <code class="command">${cmd}</code>
+                <button class="copy-btn">Copy</button>
+            </div>
+        `;
+        addCopyBehavior(item, cmd);
+        content.appendChild(item);
+    });
 
-                    const tdSound = document.createElement('td');
-                    tdSound.textContent = s.name;
+    header.addEventListener('click', () => {
+        const isActive = content.classList.toggle('active');
+        header.classList.toggle('active', isActive);
+        header.querySelector('span').textContent = isActive ? '▲' : '▼';
+        if (isActive) activeCat = cat;
+    });
 
-                    row.appendChild(tdCommand);
-                    row.appendChild(tdSound);
+    accordion.appendChild(header);
+    accordion.appendChild(content);
 
-                    row.addEventListener('click', () => {
-                        copyToClipboard(commandText, row.querySelector('.copy-btn'));
-                    });
+    if (i === 0) {
+        content.classList.add('active');
+        header.classList.add('active');
+        header.querySelector('span').textContent = '▲';
+    }
+});
 
-                    tbody.appendChild(row);
-                });
+function showCategory(cat, isDesktop = false) {
+    activeCat = cat;
+    if (!isDesktop) return;
 
-            table.appendChild(tbody);
-            section.appendChild(table);
-            contentContainer.appendChild(section);
+    tableBody.innerHTML = '';
+    groups[cat].forEach(s => {
+        const cmd = `!redeem ${s.name}`;
+        const tr = document.createElement('tr');
+        tr.className = 'table-row';
+        tr.innerHTML = `
+            <td class="command-cell">
+                <code class="command">${cmd}</code>
+                <button class="copy-btn">Copy</button>
+            </td>
+            <td>${s.name}</td>
+            <td class="points-cell"><span class="points">1000 pts</span></td>
+        `;
+        addCopyBehavior(tr, cmd);
+        tableBody.appendChild(tr);
+    });
+}
 
-            if (cat === categories[0]) {
-                section.classList.add('active');
+function addCopyBehavior(el, text) {
+    const btn = el.querySelector('.copy-btn');
+    const copy = () => {
+        navigator.clipboard.writeText(text).then(() => {
+            if (btn) {
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1600);
             }
         });
+    };
 
-        tabsContainer.addEventListener('click', e => {
-            const tab = e.target.closest('.tab');
-            if (!tab) return;
-
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            const cat = tab.dataset.category;
-            document.querySelectorAll('.category-content').forEach(el => {
-                el.classList.toggle('active', el.dataset.category === cat);
-            });
+    if (btn) {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            copy();
         });
+    }
 
-        function copyToClipboard(text, button) {
-            navigator.clipboard.writeText(text).then(() => {
-                button.textContent = 'Copied!';
-                button.classList.add('copied');
-                setTimeout(() => {
-                    button.textContent = 'Copy';
-                    button.classList.remove('copied');
-                }, 1800);
-            });
-        }
+    el.addEventListener('click', e => {
+        if (e.target.tagName !== 'BUTTON') copy();
+    });
+}
+
+if (window.innerWidth >= 980) {
+    showCategory(activeCat, true);
+}
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 980) {
+        showCategory(activeCat, true);
+    }
+});
     </script>
 </body>
 </html>
