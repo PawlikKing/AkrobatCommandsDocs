@@ -107,6 +107,27 @@
             color: #43b581;
             font-weight: 500;
         }
+
+        .copy-btn {
+            background: #40444b;
+            border: 1px solid #555;
+            color: #dcddde;
+            padding: 0.35em 0.7em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-left: 0.8rem;
+            transition: all 0.13s;
+        }
+        .copy-btn:hover {
+            background: #4f545c;
+            border-color: #7289da;
+        }
+        .copy-btn.copied {
+            background: #43b581;
+            border-color: #43b581;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -115,6 +136,7 @@
         <h1>Chatsounds Commands</h1>
         <p class="intro">
             Commands prefix is <code>!redeem</code> followed by the sound name.<br>
+            Click command row to copy or use the copy button.
         </p>
     </header>
 
@@ -140,7 +162,6 @@
             { name: 'heytwirm',   category: 'welcome'  },
             { name: 'partizan',   category: 'fun'      },
             { name: 'precious',   category: 'random'   },
-
             { name: 'disbelief',  category: 'random'   },
             { name: 'desk',       category: 'random'   },
             { name: 'hello',      category: 'random'   },
@@ -148,7 +169,6 @@
             { name: 'bah',        category: 'random'   },
             { name: 'calm',       category: 'random'   },
             { name: 'whocares',   category: 'random'   },
-
             { name: 'bomb',       category: 'scare'    },
             { name: 'grenade',    category: 'scare'    },
             { name: 'fbi',        category: 'scare'    },
@@ -161,7 +181,6 @@
             { name: 'pistol',     category: 'scare'    },
             { name: 'knock',      category: 'scare'    },
             { name: 'fly',        category: 'fun'      },
-
             { name: 'wah',        category: 'fun'      },
             { name: 'meow',       category: 'fun'      },
             { name: 'fart',       category: 'fun'      },
@@ -185,7 +204,6 @@
             const item = document.createElement('div');
             item.className = 'accordion-item';
 
-            
             const header = document.createElement('div');
             header.className = 'accordion-header';
 
@@ -197,7 +215,6 @@
             toggle.className = 'accordion-toggle';
             header.appendChild(toggle);
 
-            
             const content = document.createElement('div');
             content.className = 'accordion-content';
 
@@ -212,13 +229,54 @@
             sounds
                 .filter(s => s.category === cat)
                 .forEach(s => {
+                    const commandText = `!redeem ${s.name}`;
+
                     const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><code class="command">!redeem ${s.name}</code></td>
-                        <td>${s.name}</td>
-                    `;
+                    row.style.cursor = 'pointer';
+
+                    const tdCommand = document.createElement('td');
+                    tdCommand.innerHTML = `<code class="command">${commandText}</code>`;
+
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(commandText).then(() => {
+                            copyBtn.textContent = 'Copied!';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                                copyBtn.classList.remove('copied');
+                            }, 1800);
+                        });
+                    });
+
+                    tdCommand.appendChild(copyBtn);
+
+                    const tdSound = document.createElement('td');
+                    tdSound.textContent = s.name;
+
+                    row.appendChild(tdCommand);
+                    row.appendChild(tdSound);
+
+                    row.addEventListener('click', () => {
+                        navigator.clipboard.writeText(commandText).then(() => {
+                            const btn = row.querySelector('.copy-btn');
+                            if (btn) {
+                                btn.textContent = 'Copied!';
+                                btn.classList.add('copied');
+                                setTimeout(() => {
+                                    btn.textContent = 'Copy';
+                                    btn.classList.remove('copied');
+                                }, 1800);
+                            }
+                        });
+                    });
+
                     tbody.appendChild(row);
                 });
+
             table.appendChild(tbody);
             content.appendChild(table);
 
@@ -226,9 +284,11 @@
             item.appendChild(content);
             accordion.appendChild(item);
 
-            header.addEventListener('click', () => {
+            header.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') return;
+
                 const isActive = content.classList.contains('active');
-                
+
                 document.querySelectorAll('.accordion-content.active').forEach(el => {
                     if (el !== content) el.classList.remove('active');
                 });
