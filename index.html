@@ -6,8 +6,8 @@
     <title>Chatsound docs</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #2c2f33;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #2c2f33;
             color: #e0e0e0;
             margin: 0;
             padding: 20px 16px;
@@ -15,76 +15,74 @@
         }
         header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
         h1 {
-            color: #ffffff;
+            color: #fff;
             margin: 0.4em 0;
             font-size: 2.1rem;
         }
         .intro {
             color: #b9bbbe;
             max-width: 640px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 1.8rem;
             text-align: center;
         }
         code {
-            font-family: 'Consolas', 'Monaco', monospace;
+            font-family: 'Consolas', monospace;
             background: #23272a;
             padding: 0.15em 0.4em;
             border-radius: 4px;
             color: #f0f0f0;
         }
 
-        .accordion {
-            max-width: 900px;
-            margin: 0 auto 1.5rem;
-        }
-        .accordion-item {
-            margin-bottom: 0.5rem;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #36393f;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        }
-        .accordion-header {
-            background: #2f3136;
-            padding: 1rem 1.4rem;
-            cursor: pointer;
-            user-select: none;
+        .tabs {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.15s;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .accordion-header:hover {
+        .tab {
+            background: #36393f;
+            border: 1px solid #40444b;
+            color: #dcddde;
+            padding: 0.65rem 1.3rem;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.13s;
+            user-select: none;
+        }
+        .tab:hover {
             background: #40444b;
         }
-        .accordion-header h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: #7289da;
-            font-weight: 600;
+        .tab.active {
+            background: #7289da;
+            color: white;
+            border-color: #7289da;
         }
-        .accordion-toggle::after {
-            content: '▼';
-            font-size: 0.9rem;
-            color: #99aab5;
-            transition: transform 0.25s ease;
-        }
-        .accordion-header.active .accordion-toggle::after {
-            transform: rotate(180deg);
+        .tab-container {
+            overflow-x: auto;
+            padding-bottom: 0.4rem;
         }
 
-        .accordion-content {
-            max-height: 0;
+        .category-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: none;
+            background: #36393f;
+            border-radius: 8px;
             overflow: hidden;
-            transition: max-height 0.28s ease-out, padding 0.28s ease-out;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .accordion-content.active {
-            max-height: 4000px;
+        .category-content.active {
+            display: block;
         }
-        .accordion-content table {
+        table {
             width: 100%;
             border-collapse: collapse;
             background: #2f3136;
@@ -107,7 +105,6 @@
             color: #43b581;
             font-weight: 500;
         }
-
         .copy-btn {
             background: #40444b;
             border: 1px solid #555;
@@ -128,6 +125,16 @@
             border-color: #43b581;
             color: #fff;
         }
+
+        @media (max-width: 600px) {
+            .tabs {
+                justify-content: flex-start;
+            }
+            .tab {
+                padding: 0.6rem 1.1rem;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -135,12 +142,16 @@
     <header>
         <h1>Chatsounds Commands</h1>
         <p class="intro">
-            Commands prefix is <code>!redeem</code> followed by the sound name.<br>
-            Click command row to copy or use the copy button.
+            Prefix: <code>!redeem</code> + sound name<br>
+            Click row or "Copy" button to copy command
         </p>
     </header>
 
-    <div class="accordion" id="accordion"></div>
+    <div class="tab-container">
+        <div class="tabs" id="tabs"></div>
+    </div>
+
+    <div id="content"></div>
 
     <script>
         const sounds = [
@@ -197,32 +208,26 @@
         ];
 
         const categories = [...new Set(sounds.map(s => s.category))].sort();
+        const tabsContainer = document.getElementById('tabs');
+        const contentContainer = document.getElementById('content');
 
-        const accordion = document.getElementById('accordion');
+        categories.forEach((cat, index) => {
+            const tab = document.createElement('div');
+            tab.className = 'tab';
+            tab.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+            tab.dataset.category = cat;
+            if (index === 0) tab.classList.add('active');
+            tabsContainer.appendChild(tab);
+        });
 
         categories.forEach(cat => {
-            const item = document.createElement('div');
-            item.className = 'accordion-item';
-
-            const header = document.createElement('div');
-            header.className = 'accordion-header';
-
-            const h2 = document.createElement('h2');
-            h2.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-            header.appendChild(h2);
-
-            const toggle = document.createElement('span');
-            toggle.className = 'accordion-toggle';
-            header.appendChild(toggle);
-
-            const content = document.createElement('div');
-            content.className = 'accordion-content';
+            const section = document.createElement('div');
+            section.className = 'category-content';
+            section.dataset.category = cat;
 
             const table = document.createElement('table');
             const thead = document.createElement('thead');
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<th>Command</th><th>Sound</th>`;
-            thead.appendChild(tr);
+            thead.innerHTML = `<tr><th>Command</th><th>Sound</th></tr>`;
             table.appendChild(thead);
 
             const tbody = document.createElement('tbody');
@@ -240,16 +245,9 @@
                     const copyBtn = document.createElement('button');
                     copyBtn.className = 'copy-btn';
                     copyBtn.textContent = 'Copy';
-                    copyBtn.addEventListener('click', (e) => {
+                    copyBtn.addEventListener('click', e => {
                         e.stopPropagation();
-                        navigator.clipboard.writeText(commandText).then(() => {
-                            copyBtn.textContent = 'Copied!';
-                            copyBtn.classList.add('copied');
-                            setTimeout(() => {
-                                copyBtn.textContent = 'Copy';
-                                copyBtn.classList.remove('copied');
-                            }, 1800);
-                        });
+                        copyToClipboard(commandText, copyBtn);
                     });
 
                     tdCommand.appendChild(copyBtn);
@@ -261,45 +259,44 @@
                     row.appendChild(tdSound);
 
                     row.addEventListener('click', () => {
-                        navigator.clipboard.writeText(commandText).then(() => {
-                            const btn = row.querySelector('.copy-btn');
-                            if (btn) {
-                                btn.textContent = 'Copied!';
-                                btn.classList.add('copied');
-                                setTimeout(() => {
-                                    btn.textContent = 'Copy';
-                                    btn.classList.remove('copied');
-                                }, 1800);
-                            }
-                        });
+                        copyToClipboard(commandText, row.querySelector('.copy-btn'));
                     });
 
                     tbody.appendChild(row);
                 });
 
             table.appendChild(tbody);
-            content.appendChild(table);
+            section.appendChild(table);
+            contentContainer.appendChild(section);
 
-            item.appendChild(header);
-            item.appendChild(content);
-            accordion.appendChild(item);
+            if (cat === categories[0]) {
+                section.classList.add('active');
+            }
+        });
 
-            header.addEventListener('click', (e) => {
-                if (e.target.tagName === 'BUTTON') return;
+        tabsContainer.addEventListener('click', e => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
 
-                const isActive = content.classList.contains('active');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-                document.querySelectorAll('.accordion-content.active').forEach(el => {
-                    if (el !== content) el.classList.remove('active');
-                });
-                document.querySelectorAll('.accordion-header.active').forEach(el => {
-                    if (el !== header) el.classList.remove('active');
-                });
-
-                content.classList.toggle('active', !isActive);
-                header.classList.toggle('active', !isActive);
+            const cat = tab.dataset.category;
+            document.querySelectorAll('.category-content').forEach(el => {
+                el.classList.toggle('active', el.dataset.category === cat);
             });
         });
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                    button.classList.remove('copied');
+                }, 1800);
+            });
+        }
     </script>
 </body>
 </html>
