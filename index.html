@@ -1,513 +1,687 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chatsounds List</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --bg:           #171a27;
-            --card:         #1f2235;
-            --border:       #3c4466;
-            --text:         #e8ecff;
-            --text-muted:   #b8c0ff;
-            --accent:       #88ccff;
-            --accent-dark:  #60aaff;
-            --green:        #90e8c8;
-            --green-dark:   #68d0a8;
-            --blueish:      #a8d0ff;
-            --codebg:       #21263a;
-            --navbar:       #11141f;
-            --hover:        #2a314f;
-        }
+      :root {
+        --bg: #171a27;
+        --card: #1f2235;
+        --border: #3c4466;
+        --text: #e8ecff;
+        --text-muted: #b8c0ff;
+        --accent: #88ccff;
+        --accent-dark: #60aaff;
+        --green: #90e8c8;
+        --green-dark: #68d0a8;
+        --blueish: #a8d0ff;
+        --codebg: #21263a;
+        --navbar: #11141f;
+        --hover: #2a314f;
+        --search-bg: #1f2235;
+      }
 
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.55;
-            font-size: 15px;
-        }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+        font-size: 15px;
+      }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-        main {
-            flex: 1 0 auto;
-        }
+      main {
+        flex: 1 0 auto;
+      }
 
-        .container {
-            max-width: 1380px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+      .container {
+        max-width: 1380px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
 
-        header {
-            background: linear-gradient(to bottom, #1f2235, #171a27);
-            color: white;
-            padding: 2.2rem 1rem 1.6rem;
-            text-align: center;
-        }
+      header {
+        background: linear-gradient(to bottom, #1f2235, #171a27);
+        color: white;
+        padding: 2.2rem 1rem 1.2rem;
+        text-align: center;
+      }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.4rem;
-            font-weight: 600;
-        }
+      header h1 {
+        margin: 0;
+        font-size: 2.4rem;
+        font-weight: 600;
+      }
 
-        header p {
-            margin: 8px 0 0;
-            font-size: 1.05rem;
-            color: #d0d8ff;
-        }
+      header p {
+        margin: 8px 0 1.2rem;
+        font-size: 1.05rem;
+        color: #d0d8ff;
+      }
 
-        .navbar {
-            position: sticky;
-            top: 0;
-            background: var(--navbar);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
+      .search-container {
+        margin: 0 auto 1.5rem;
+        max-width: 520px;
+      }
 
-        .navbar-inner {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 6px;
-            padding: 0 1rem;
-        }
+      .search-input {
+        width: 100%;
+        padding: 12px 16px 12px 44px;
+        font-size: 1rem;
+        background: var(--search-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        outline: none;
+        transition: all 0.18s;
+      }
 
-        .navbar a {
-            color: #e0e8ff;
-            padding: 1rem 1.5rem;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.18s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      .search-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(136, 204, 255, 0.15);
+      }
 
-        .navbar a:hover {
-            background: var(--hover);
-            color: var(--accent);
-        }
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        pointer-events: none;
+      }
 
-        .navbar a.active {
-            background: var(--accent);
-            color: #0f1320;
-            border-radius: 6px 6px 0 0;
-        }
+      .search-wrapper {
+        position: relative;
+      }
 
+      .navbar {
+        position: sticky;
+        top: 0;
+        background: var(--navbar);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+
+      .navbar-inner {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 0 1rem;
+      }
+
+      .navbar a {
+        color: #e0e8ff;
+        padding: 1rem 1.5rem;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .navbar a:hover {
+        background: var(--hover);
+        color: var(--accent);
+      }
+
+      .navbar a.active {
+        background: var(--accent);
+        color: #0f1320;
+        border-radius: 6px 6px 0 0;
+      }
+
+      .accordion {
+        margin: 1.5rem 0 2.5rem;
+      }
+
+      .accordion-header {
+        background: var(--card);
+        padding: 14px 18px;
+        border: 1px solid var(--border);
+        margin-bottom: 2px;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+        color: #e8ecff;
+      }
+
+      .accordion-header:hover {
+        background: #282e4a;
+      }
+
+      .accordion-header.active {
+        background: var(--accent);
+        color: #0f1320;
+      }
+
+      .accordion-content {
+        display: none;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-top: none;
+      }
+
+      .accordion-content.active,
+      .accordion-content.search-active {
+        display: block;
+      }
+
+      .sound-item {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        transition: background 0.15s;
+      }
+
+      .sound-item:hover {
+        background: #282e4a;
+      }
+
+      .sound-item:last-child {
+        border-bottom: none;
+      }
+
+      .sound-name {
+        font-weight: 600;
+        min-width: 120px;
+        color: var(--blueish);
+      }
+
+      .sound-cmd {
+        font-family: Consolas, monospace;
+        background: var(--codebg);
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: var(--green);
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .points {
+        background: rgba(144, 232, 200, 0.15);
+        color: var(--green);
+        padding: 5px 12px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .copy-btn {
+        background: var(--accent);
+        color: #0f1320;
+        border: none;
+        padding: 7px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.18s;
+      }
+
+      .copy-btn:hover {
+        background: var(--accent-dark);
+      }
+
+      .copy-btn.copied {
+        background: var(--green-dark);
+        color: white;
+      }
+
+      .no-results {
+        padding: 2rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 1.1rem;
+      }
+
+      @media (min-width: 980px) {
         .accordion {
-            margin: 2rem 0 3rem;
+          display: none;
         }
 
-        .accordion-header {
-            background: var(--card);
-            padding: 14px 18px;
-            border: 1px solid var(--border);
-            margin-bottom: 2px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s;
-            color: #e8ecff;
+        .table-container {
+          margin: 1.5rem 0 3rem;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          overflow: hidden;
+          background: var(--card);
         }
 
-        .accordion-header:hover {
-            background: #282e4a;
+        table {
+          width: 100%;
+          border-collapse: collapse;
         }
 
-        .accordion-header.active {
-            background: var(--accent);
-            color: #0f1320;
+        th,
+        td {
+          padding: 14px 18px;
+          text-align: left;
         }
 
-        .accordion-content {
-            display: none;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-top: none;
+        th {
+          background: #11141f;
+          color: #e8ecff;
+          font-weight: 600;
         }
 
-        .accordion-content.active {
-            display: block;
+        tr:hover {
+          background: #282e4a;
         }
 
-        .sound-item {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            align-items: center;
-            transition: background 0.15s;
-        }
-
-        .sound-item:hover {
-            background: #282e4a;
-        }
-
-        .sound-item:last-child {
-            border-bottom: none;
-        }
-
-        .sound-name {
-            font-weight: 600;
-            min-width: 120px;
-            color: var(--blueish);
-        }
-
-        .sound-cmd {
-            font-family: Consolas, monospace;
-            background: var(--codebg);
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: var(--green);
-            flex: 1;
-            min-width: 180px;
+        .cmd-cell {
+          display: flex;
+          align-items: center;
+          gap: 14px;
         }
 
         .points {
-            background: rgba(144,232,200,0.15);
-            color: var(--green);
-            padding: 5px 12px;
-            border-radius: 14px;
-            font-size: 0.92rem;
-            font-weight: 500;
-            white-space: nowrap;
+          background: transparent;
+          color: var(--green);
+          text-align: center;
+          font-weight: 600;
         }
 
-        .copy-btn {
-            background: var(--accent);
-            color: #0f1320;
-            border: none;
-            padding: 7px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.18s;
+        .search-container {
+          margin: 1rem auto 1.8rem;
         }
+      }
 
-        .copy-btn:hover {
-            background: var(--accent-dark);
+      @media (max-width: 979px) {
+        .table-container {
+          display: none;
         }
+      }
 
-        .copy-btn.copied {
-            background: var(--green-dark);
-            color: white;
-        }
+      footer {
+        flex-shrink: 0;
+        background: var(--navbar);
+        color: #c0c8ff;
+        text-align: center;
+        padding: 1.8rem;
+        font-size: 0.94rem;
+        border-top: 1px solid var(--border);
+      }
 
-        @media (min-width: 980px) {
-            .accordion {
-                display: none;
-            }
-
-            .table-container {
-                margin: 2.2rem 0 3.5rem;
-                border: 1px solid var(--border);
-                border-radius: 8px;
-                overflow: hidden;
-                background: var(--card);
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-            th, td {
-                padding: 14px 18px;
-                text-align: left;
-            }
-
-            th {
-                background: #11141f;
-                color: #e8ecff;
-                font-weight: 600;
-            }
-
-            tr:hover {
-                background: #282e4a;
-            }
-
-            .cmd-cell {
-                display: flex;
-                align-items: center;
-                gap: 14px;
-            }
-
-            .points {
-                background: transparent;
-                color: var(--green);
-                text-align: center;
-                font-weight: 600;
-            }
-        }
-
-        @media (max-width: 979px) {
-            .table-container {
-                display: none;
-            }
-        }
-
-        footer {
-            flex-shrink: 0;
-            background: var(--navbar);
-            color: #c0c8ff;
-            text-align: center;
-            padding: 1.8rem;
-            font-size: 0.94rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .material-icons, .material-symbols-outlined {
-            font-size: 1.18rem;
-            vertical-align: middle;
-        }
+      .material-icons,
+      .material-symbols-outlined {
+        font-size: 1.18rem;
+        vertical-align: middle;
+      }
     </style>
-</head>
-<body>
-
-<header>
-    <div class="container">
+  </head>
+  <body>
+    <header>
+      <div class="container">
         <h1>Chatsounds List</h1>
-        <p>Click row or <span class="material-icons">content_copy</span> to copy <code>!redeem</code> command</p>
-    </div>
-</header>
+        <p>
+          Click row or <span class="material-icons">content_copy</span> to copy
+          <code>!redeem</code> command
+        </p>
+      </div>
+    </header>
 
-<div class="navbar">
-    <div class="container">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <span class="material-icons search-icon">search</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search sounds (e.g. wah, bell)..."
+        />
+      </div>
+    </div>
+
+    <div class="navbar">
+      <div class="container">
         <div class="navbar-inner" id="navbarInner"></div>
+      </div>
     </div>
-</div>
 
-<main class="container">
+    <main class="container">
+      <div class="accordion" id="accordion"></div>
 
-    <div class="accordion" id="accordion"></div>
-
-    <div class="table-container">
+      <div class="table-container">
         <table>
-            <thead>
-                <tr>
-                    <th>Command</th>
-                    <th>Sound</th>
-                    <th style="text-align:center">Points</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Sound</th>
+              <th style="text-align: center">Points</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
         </table>
-    </div>
+        <div id="noResultsDesktop" class="no-results" style="display: none">
+          No matching sounds found
+        </div>
+      </div>
+    </main>
 
-</main>
+    <footer>
+      <p>Updated February 21, 2026 • Points marked as ? ? ? until confirmed</p>
+    </footer>
 
-<footer>
-    <p>Updated February 21, 2026 • Points marked as ? ? ? until confirmed</p>
-</footer>
+    <script>
+      const sounds = [
+        { name: "akro", category: "people" },
+        { name: "randy", category: "people" },
+        { name: "forfrodo", category: "people" },
+        { name: "ace", category: "people" },
+        { name: "mexicans", category: "fun" },
+        { name: "precious", category: "fun" },
+        { name: "hello", category: "fun" },
+        { name: "good", category: "fun" },
+        { name: "nice", category: "fun" },
+        { name: "calm", category: "fun" },
+        { name: "princess", category: "fun" },
+        { name: "takatakataka", category: "fun" },
+        { name: "turtle", category: "fun" },
+        { name: "fart", category: "fun" },
+        { name: "gotcha", category: "fun" },
+        { name: "cricket", category: "fun" },
+        { name: "gaming", category: "fun" },
+        { name: "mmm", category: "fun" },
+        { name: "park", category: "fun" },
+        { name: "ninja", category: "fun" },
+        { name: "fah", category: "fun" },
+        { name: "jelly", category: "fun" },
+        { name: "kitty", category: "fun" },
+        { name: "bingbong", category: "fun" },
+        { name: "skill", category: "fun" },
+        { name: "meow", category: "fun" },
+        { name: "elevator", category: "fun" },
+        { name: "romantic", category: "fun" },
+        { name: "laugh", category: "fun" },
+        { name: "reallynice", category: "fun" },
+        { name: "itsok", category: "fun" },
+        { name: "gigachad", category: "fun" },
+        { name: "twilight", category: "fun" },
+        { name: "fartdirection", category: "fun" },
+        { name: "taunt", category: "fun" },
+        { name: "bing", category: "fun" },
+        { name: "loveyou", category: "fun" },
+        { name: "mwah", category: "fun" },
+        { name: "moan", category: "fun" },
+        { name: "jelly2", category: "fun" },
+        { name: "stewie", category: "fun" },
+        { name: "kenny", category: "fun" },
+        { name: "smoke", category: "fun" },
+        { name: "bell", category: "fun" },
+        { name: "usa", category: "fun" },
+        { name: "quiet", category: "fun" },
+        { name: "timmy", category: "fun" },
+        { name: "17", category: "fun" },
+        { name: "gop", category: "fun" },
+        { name: "sorry", category: "fun" },
+        { name: "fakenews", category: "fun" },
+        { name: "run", category: "fun" },
+        { name: "helikopter", category: "fun" },
+        { name: "killzone", category: "fun" },
+        { name: "bombthem", category: "fun" },
+        { name: "alert", category: "fun" },
+        { name: "jobs", category: "fun" },
+        { name: "heybuddy", category: "fun" },
+        { name: "dumbass", category: "fun" },
+        { name: "dicks", category: "fun" },
+        { name: "howman", category: "fun" },
+        { name: "bald", category: "fun" },
+        { name: "rig", category: "fun" },
+        { name: "latinas", category: "fun" },
+        { name: "bruh", category: "fun" },
+        { name: "autism", category: "fun" },
+        { name: "lizard", category: "fun" },
+        { name: "bosnia", category: "fun" },
+        { name: "america", category: "fun" },
+        { name: "supervisor", category: "fun" },
+        { name: "heyphrasing", category: "fun" },
+        { name: "errect", category: "fun" },
+        { name: "zehaha", category: "fun" },
+        { name: "brook", category: "fun" },
+        { name: "asscheeks", category: "fun" },
+        { name: "china", category: "fun" },
+        { name: "thankyou", category: "fun" },
+        { name: "rude", category: "fun" },
+        { name: "stupidquestion", category: "fun" },
+        { name: "sillywoman", category: "fun" },
+        { name: "biden", category: "fun" },
+        { name: "grasses", category: "fun" },
+        { name: "mextrumpet", category: "fun" },
+        { name: "freaks", category: "fun" },
+        { name: "thisguy", category: "fun" },
+        { name: "standingthere", category: "fun" },
+        { name: "kurwa", category: "fun" },
+        { name: "kurwabober", category: "fun" },
+        { name: "kakalinkurwa", category: "fun" },
+        { name: "runaway", category: "fun" },
+        { name: "bleed", category: "fun" },
+        { name: "killedkenn", category: "fun" },
+        { name: "deathtrumpet", category: "mock" },
+        { name: "damn", category: "mock" },
+        { name: "wah", category: "mock" },
+        { name: "emotionaldamage", category: "mock" },
+        { name: "shesaid", category: "mock" },
+        { name: "whocares", category: "mock" },
+        { name: "50cal", category: "scare" },
+        { name: "fbi", category: "scare" },
+        { name: "knock", category: "scare" },
+        { name: "desk", category: "scare" },
+      ];
 
-<script>
-const sounds = [
-    {name:"akro", category:"people"},
-    {name:"randy", category:"people"},
-    {name:"forfrodo", category:"people"},
-    {name:"ace", category:"people"},
-    {name:"mexicans", category:"fun"},
-    {name:"precious", category:"fun"},
-    {name:"hello", category:"fun"},
-    {name:"good", category:"fun"},
-    {name:"nice", category:"fun"},
-    {name:"calm", category:"fun"},
-    {name:"princess", category:"fun"},
-    {name:"takatakataka", category:"fun"},
-    {name:"turtle", category:"fun"},
-    {name:"fart", category:"fun"},
-    {name:"gotcha", category:"fun"},
-    {name:"cricket", category:"fun"},
-    {name:"gaming", category:"fun"},
-    {name:"mmm", category:"fun"},
-    {name:"park", category:"fun"},
-    {name:"ninja", category:"fun"},
-    {name:"fah", category:"fun"},
-    {name:"jelly", category:"fun"},
-    {name:"kitty", category:"fun"},
-    {name:"bingbong", category:"fun"},
-    {name:"skill", category:"fun"},
-    {name:"meow", category:"fun"},
-    {name:"elevator", category:"fun"},
-    {name:"romantic", category:"fun"},
-    {name:"laugh", category:"fun"},
-    {name:"reallynice", category:"fun"},
-    {name:"itsok", category:"fun"},
-    {name:"gigachad", category:"fun"},
-    {name:"twilight", category:"fun"},
-    {name:"fartdirection", category:"fun"},
-    {name:"taunt", category:"fun"},
-    {name:"bing", category:"fun"},
-    {name:"loveyou", category:"fun"},
-    {name:"mwah", category:"fun"},
-    {name:"moan", category:"fun"},
-    {name:"jelly2", category:"fun"},
-    {name:"stewie", category:"fun"},
-    {name:"kenny", category:"fun"},
-    {name:"smoke", category:"fun"},
-    {name:"bell", category:"fun"},
-    {name:"usa", category:"fun"},
-    {name:"quiet", category:"fun"},
-    {name:"timmy", category:"fun"},
-    {name:"17", category:"fun"},
-    {name:"gop", category:"fun"},
-    {name:"sorry", category:"fun"},
-    {name:"fakenews", category:"fun"},
-    {name:"run", category:"fun"},
-    {name:"helikopter", category:"fun"},
-    {name:"killzone", category:"fun"},
-    {name:"bombthem", category:"fun"},
-    {name:"alert", category:"fun"},
-    {name:"jobs", category:"fun"},
-    {name:"heybuddy", category:"fun"},
-    {name:"dumbass", category:"fun"},
-    {name:"dicks", category:"fun"},
-    {name:"howman", category:"fun"},
-    {name:"bald", category:"fun"},
-    {name:"rig", category:"fun"},
-    {name:"latinas", category:"fun"},
-    {name:"bruh", category:"fun"},
-    {name:"autism", category:"fun"},
-    {name:"lizard", category:"fun"},
-    {name:"bosnia", category:"fun"},
-    {name:"america", category:"fun"},
-    {name:"supervisor", category:"fun"},
-    {name:"heyphrasing", category:"fun"},
-    {name:"errect", category:"fun"},
-    {name:"zehaha", category:"fun"},
-    {name:"brook", category:"fun"},
-    {name:"asscheeks", category:"fun"},
-    {name:"china", category:"fun"},
-    {name:"thankyou", category:"fun"},
-    {name:"rude", category:"fun"},
-    {name:"stupidquestion", category:"fun"},
-    {name:"sillywoman", category:"fun"},
-    {name:"biden", category:"fun"},
-    {name:"grasses", category:"fun"},
-    {name:"mextrumpet", category:"fun"},
-    {name:"freaks", category:"fun"},
-    {name:"thisguy", category:"fun"},
-    {name:"standingthere", category:"fun"},
-    {name:"kurwa", category:"fun"},
-    {name:"kurwabober", category:"fun"},
-    {name:"kakalinkurwa", category:"fun"},
-    {name:"runaway", category:"fun"},
-    {name:"bleed", category:"fun"},
-    {name:"killedkenn", category:"fun"},
-    {name:"deathtrumpet", category:"mock"},
-    {name:"damn", category:"mock"},
-    {name:"wah", category:"mock"},
-    {name:"emotionaldamage", category:"mock"},
-    {name:"shesaid", category:"mock"},
-    {name:"whocares", category:"mock"},
-    {name:"50cal", category:"scare"},
-    {name:"fbi", category:"scare"},
-    {name:"knock", category:"scare"},
-    {name:"desk", category:"scare"},
-];
+      const groups = {};
+      sounds.forEach((s) => {
+        if (!groups[s.category]) groups[s.category] = [];
+        groups[s.category].push(s);
+      });
 
-const groups = {};
-sounds.forEach(s => {
-    if (!groups[s.category]) groups[s.category] = [];
-    groups[s.category].push(s);
-});
+      const categories = Object.keys(groups).sort();
 
-const categories = Object.keys(groups).sort();
+      const navbarInner = document.getElementById("navbarInner");
+      const accordion = document.getElementById("accordion");
+      const tableBody = document.getElementById("tableBody");
+      const searchInput = document.getElementById("searchInput");
+      const noResultsDesktop = document.getElementById("noResultsDesktop");
 
-const navbarInner = document.getElementById('navbarInner');
-const accordion = document.getElementById('accordion');
-const tableBody = document.getElementById('tableBody');
+      let activeCat = categories[0];
+      let searchTerm = "";
 
-let activeCat = categories[0];
+      const categoryIcons = {
+        fun: "mood",
+        people: "group",
+        scare: "warning",
+        mock: "sentiment_satisfied_alt",
+      };
 
-const categoryIcons = {
-    fun:    "mood",
-    people: "group",
-    scare:  "warning",
-    mock:   "sentiment_satisfied_alt"
-};
+      categories.forEach((cat, i) => {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.innerHTML = `<span class="material-icons">${categoryIcons[cat] || "music_note"}</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)}`;
+        if (i === 0) a.classList.add("active");
+        navbarInner.appendChild(a);
 
-categories.forEach((cat, i) => {
-    const a = document.createElement('a');
-    a.href = '#';
-    a.innerHTML = `<span class="material-icons">${categoryIcons[cat] || "music_note"}</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)}`;
-    if (i === 0) a.classList.add('active');
-    navbarInner.appendChild(a);
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          navbarInner
+            .querySelectorAll("a")
+            .forEach((l) => l.classList.remove("active"));
+          a.classList.add("active");
+          activeCat = cat;
+          updateView();
+        });
+      });
 
-    a.addEventListener('click', e => {
-        e.preventDefault();
-        navbarInner.querySelectorAll('a').forEach(l => l.classList.remove('active'));
-        a.classList.add('active');
-        activeCat = cat;
-        showTable(cat);
-    });
-});
+      categories.forEach((cat, i) => {
+        const header = document.createElement("div");
+        header.className = "accordion-header";
+        header.dataset.category = cat;
+        header.innerHTML = `<span class="material-symbols-outlined">expand_more</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)} <span class="material-symbols-outlined">chevron_right</span>`;
 
-categories.forEach((cat, i) => {
-    const header = document.createElement('div');
-    header.className = 'accordion-header';
-    header.innerHTML = `<span class="material-symbols-outlined">expand_more</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)} <span class="material-symbols-outlined">chevron_right</span>`;
+        const content = document.createElement("div");
+        content.className = "accordion-content";
+        content.dataset.category = cat;
 
-    const content = document.createElement('div');
-    content.className = 'accordion-content';
-
-    groups[cat].forEach(s => {
-        const cmd = `!redeem ${s.name}`;
-        const item = document.createElement('div');
-        item.className = 'sound-item';
-        item.innerHTML = `
+        groups[cat].forEach((s) => {
+          const cmd = `!redeem ${s.name}`;
+          const item = document.createElement("div");
+          item.className = "sound-item";
+          item.dataset.name = s.name.toLowerCase();
+          item.innerHTML = `
             <span class="sound-name">${s.name}</span>
             <code class="sound-cmd">${cmd}</code>
             <span class="points">? ? ?</span>
             <button class="copy-btn">Copy</button>
         `;
-        addCopy(item, cmd);
-        content.appendChild(item);
-    });
+          addCopy(item, cmd);
+          content.appendChild(item);
+        });
 
-    header.addEventListener('click', () => {
-        const active = content.classList.toggle('active');
-        header.classList.toggle('active', active);
-        header.querySelectorAll('.material-symbols-outlined')[0].textContent = active ? 'expand_less' : 'expand_more';
-    });
+        header.addEventListener("click", () => {
+          const active = content.classList.toggle("active");
+          header.classList.toggle("active", active);
+          header.querySelectorAll(".material-symbols-outlined")[0].textContent =
+            active ? "expand_less" : "expand_more";
+        });
 
-    accordion.appendChild(header);
-    accordion.appendChild(content);
+        accordion.appendChild(header);
+        accordion.appendChild(content);
 
-    if (i === 0) {
-        content.classList.add('active');
-        header.classList.add('active');
-        header.querySelector('.material-symbols-outlined').textContent = 'expand_less';
-    }
-});
+        if (i === 0) {
+          content.classList.add("active");
+          header.classList.add("active");
+          header.querySelector(".material-symbols-outlined").textContent =
+            "expand_less";
+        }
+      });
 
-function showTable(cat) {
-    if (window.innerWidth < 980) return;
-    tableBody.innerHTML = '';
-    groups[cat].forEach(s => {
-        const cmd = `!redeem ${s.name}`;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+      function addCopy(el, text) {
+        const btn = el.querySelector(".copy-btn");
+        const copy = () => {
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = "Copied!";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.textContent = "Copy";
+              btn.classList.remove("copied");
+            }, 1500);
+          });
+        };
+
+        btn?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          copy();
+        });
+
+        el.addEventListener("click", (e) => {
+          if (e.target.tagName !== "BUTTON") copy();
+        });
+      }
+
+      function updateView() {
+        const term = searchInput.value.trim().toLowerCase();
+        searchTerm = term;
+
+        if (term === "") {
+          if (window.innerWidth >= 980) {
+            showTable(activeCat);
+            noResultsDesktop.style.display = "none";
+          } else {
+            document.querySelectorAll(".accordion-content").forEach((c) => {
+              c.classList.remove("search-active");
+            });
+            const activeContent = document.querySelector(
+              `.accordion-content[data-category="${activeCat}"]`,
+            );
+            if (activeContent) activeContent.classList.add("active");
+          }
+          return;
+        }
+
+        let hasResults = false;
+
+        if (window.innerWidth < 980) {
+          document.querySelectorAll(".accordion-content").forEach((content) => {
+            let visibleInCat = 0;
+            content.querySelectorAll(".sound-item").forEach((item) => {
+              if (item.dataset.name.includes(term)) {
+                item.style.display = "";
+                visibleInCat++;
+                hasResults = true;
+              } else {
+                item.style.display = "none";
+              }
+            });
+            const header = document.querySelector(
+              `.accordion-header[data-category="${content.dataset.category}"]`,
+            );
+            if (visibleInCat > 0) {
+              content.classList.add("search-active");
+              if (!content.classList.contains("active")) {
+                header.click();
+              }
+            } else {
+              content.classList.remove("search-active");
+            }
+          });
+        } else {
+          tableBody.innerHTML = "";
+          sounds
+            .filter((s) => s.name.toLowerCase().includes(term))
+            .forEach((s) => {
+              const cmd = `!redeem ${s.name}`;
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+                    <td class="cmd-cell">
+                        <code class="sound-cmd">${cmd}</code>
+                        <button class="copy-btn">Copy</button>
+                    </td>
+                    <td>${s.name}</td>
+                    <td style="text-align:center"><span class="points">? ? ?</span></td>
+                `;
+              addCopy(tr, cmd);
+              tableBody.appendChild(tr);
+              hasResults = true;
+            });
+          noResultsDesktop.style.display = hasResults ? "none" : "block";
+        }
+      }
+
+      function showTable(cat) {
+        if (window.innerWidth < 980 || searchTerm !== "") return;
+        tableBody.innerHTML = "";
+        groups[cat].forEach((s) => {
+          const cmd = `!redeem ${s.name}`;
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
             <td class="cmd-cell">
                 <code class="sound-cmd">${cmd}</code>
                 <button class="copy-btn">Copy</button>
@@ -515,39 +689,21 @@ function showTable(cat) {
             <td>${s.name}</td>
             <td style="text-align:center"><span class="points">? ? ?</span></td>
         `;
-        addCopy(tr, cmd);
-        tableBody.appendChild(tr);
-    });
-}
-
-function addCopy(el, text) {
-    const btn = el.querySelector('.copy-btn');
-    const copy = () => {
-        navigator.clipboard.writeText(text).then(() => {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.textContent = 'Copy';
-                btn.classList.remove('copied');
-            }, 1500);
+          addCopy(tr, cmd);
+          tableBody.appendChild(tr);
         });
-    };
+        noResultsDesktop.style.display = "none";
+      }
 
-    btn?.addEventListener('click', e => {
-        e.stopPropagation();
-        copy();
-    });
+      searchInput.addEventListener("input", updateView);
 
-    el.addEventListener('click', e => {
-        if (e.target.tagName !== 'BUTTON') copy();
-    });
-}
+      if (window.innerWidth >= 980) showTable(activeCat);
 
-if (window.innerWidth >= 980) showTable(activeCat);
-
-window.addEventListener('resize', () => {
-    if (window.innerWidth >= 980) showTable(activeCat);
-});
-</script>
-</body>
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 980) {
+          updateView();
+        }
+      });
+    </script>
+  </body>
 </html>
