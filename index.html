@@ -27,7 +27,6 @@
         --codebg: #21263a;
         --navbar: #11141f;
         --hover: #2a314f;
-        --search-bg: #1f2235;
       }
 
       * {
@@ -38,11 +37,10 @@
       body {
         height: 100%;
         margin: 0;
-        font-family: "Segoe UI", Arial, sans-serif;
+        font-family: system-ui, sans-serif;
         background: var(--bg);
         color: var(--text);
-        line-height: 1.55;
-        font-size: 15px;
+        line-height: 1.5;
       }
 
       body {
@@ -55,121 +53,214 @@
         flex: 1 0 auto;
       }
 
-      .container {
-        max-width: 1380px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
       header {
         background: linear-gradient(to bottom, #1f2235, #171a27);
-        color: white;
-        padding: 2.2rem 1rem 1.2rem;
         text-align: center;
+        padding: 1.8rem 1rem 1rem;
       }
 
-      header h1 {
+      h1 {
         margin: 0;
-        font-size: 2.4rem;
+        font-size: clamp(1.9rem, 7vw, 2.6rem);
         font-weight: 600;
       }
 
       header p {
-        margin: 8px 0 1.2rem;
-        font-size: 1.05rem;
+        margin: 0.6rem 0 0;
+        font-size: clamp(0.95rem, 4vw, 1.05rem);
         color: #d0d8ff;
-      }
-
-      .search-container {
-        margin: 0 auto 1.5rem;
-        max-width: 520px;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: 12px 16px 12px 44px;
-        font-size: 1rem;
-        background: var(--search-bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--text);
-        outline: none;
-        transition: all 0.18s;
-      }
-
-      .search-input:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(136, 204, 255, 0.15);
-      }
-
-      .search-icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        pointer-events: none;
-      }
-
-      .search-wrapper {
-        position: relative;
       }
 
       .navbar {
         position: sticky;
         top: 0;
         background: var(--navbar);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
+        box-shadow: 0 3px 10px #0008;
+        z-index: 100;
       }
 
       .navbar-inner {
         display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 0 1rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        min-height: 56px;
+      }
+
+      .nav-links {
+        display: flex;
+        overflow-x: auto;
+        flex: 1;
+        -webkit-overflow-scrolling: touch;
       }
 
       .navbar a {
+        flex: 0 0 auto;
         color: #e0e8ff;
-        padding: 1rem 1.5rem;
-        text-decoration: none;
-        font-size: 1rem;
+        padding: 14px 18px;
+        font-size: clamp(0.95rem, 4vw, 1.05rem);
         font-weight: 500;
-        transition: all 0.18s;
+        text-decoration: none;
         display: flex;
         align-items: center;
         gap: 8px;
+        white-space: nowrap;
       }
 
-      .navbar a:hover {
-        background: var(--hover);
-        color: var(--accent);
-      }
-
+      .navbar a:hover,
       .navbar a.active {
         background: var(--accent);
         color: #0f1320;
-        border-radius: 6px 6px 0 0;
       }
 
-      .accordion {
-        margin: 1.5rem 0 2.5rem;
+      .navbar a.active {
+        font-weight: 600;
+      }
+
+      .search-container {
+        padding: 8px 0;
+      }
+
+      .search-wrapper {
+        position: relative;
+        width: 240px;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 9px 12px 9px 36px;
+        font-size: 0.96rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        outline: none;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: 979px) {
+        .navbar-inner {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 0 8px;
+        }
+
+        .nav-links {
+          order: 1;
+          padding: 0 4px;
+        }
+
+        .search-container {
+          order: 2;
+          padding: 10px 8px 14px;
+          width: 100%;
+        }
+
+        .search-wrapper {
+          width: 100%;
+        }
+
+        .search-input {
+          padding: 12px 14px 12px 44px;
+          font-size: clamp(0.97rem, 4.2vw, 1.05rem);
+        }
+
+        .search-icon {
+          left: 14px;
+          font-size: 1.3rem;
+        }
+
+        header {
+          padding: 24px 16px 16px;
+        }
+      }
+
+      @media (min-width: 980px) {
+        .accordion {
+          display: none;
+        }
+
+        .container {
+          padding: 0 32px;
+        }
+
+        .search-input {
+          font-size: 1rem;
+        }
+
+        .table-container {
+          overflow: hidden;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        th,
+        td {
+          padding: 16px 20px;
+        }
+
+        th {
+          font-weight: 600;
+          color: #e8ecff;
+        }
+
+        tr:hover {
+          background: #282e4a;
+        }
+
+        .cmd-cell {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .sound-cmd {
+          font-size: 1rem;
+        }
+
+        .copy-btn {
+          padding: 10px 20px;
+          font-size: 1rem;
+        }
+
+        .points {
+          text-align: center;
+          background: transparent;
+          font-weight: 600;
+        }
+      }
+
+      @media (max-width: 979px) {
+        .table-container {
+          display: none;
+        }
       }
 
       .accordion-header {
         background: var(--card);
-        padding: 14px 18px;
-        border: 1px solid var(--border);
-        margin-bottom: 2px;
-        cursor: pointer;
+        padding: 18px 16px;
+        font-size: clamp(1.1rem, 4.8vw, 1.25rem);
         font-weight: 600;
+        cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: all 0.2s;
-        color: #e8ecff;
+        border-bottom: 1px solid var(--border);
       }
 
       .accordion-header:hover {
@@ -184,8 +275,6 @@
       .accordion-content {
         display: none;
         background: var(--card);
-        border: 1px solid var(--border);
-        border-top: none;
       }
 
       .accordion-content.active,
@@ -194,62 +283,70 @@
       }
 
       .sound-item {
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--border);
+        padding: 18px 16px;
+        border-bottom: 1px solid #2a314f;
         display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        align-items: center;
-        transition: background 0.15s;
+        flex-direction: column;
+        gap: 12px;
+        font-size: clamp(1rem, 4.2vw, 1.15rem);
+        cursor: pointer;
       }
 
       .sound-item:hover {
         background: #282e4a;
       }
 
-      .sound-item:last-child {
-        border-bottom: none;
+      .sound-item .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
       }
 
       .sound-name {
         font-weight: 600;
-        min-width: 120px;
         color: var(--blueish);
-      }
-
-      .sound-cmd {
-        font-family: Consolas, monospace;
-        background: var(--codebg);
-        padding: 5px 10px;
-        border-radius: 5px;
-        color: var(--green);
-        flex: 1;
-        min-width: 180px;
+        font-size: 1.15em;
       }
 
       .points {
-        background: rgba(144, 232, 200, 0.15);
+        background: rgba(144, 232, 200, 0.18);
         color: var(--green);
-        padding: 5px 12px;
-        border-radius: 14px;
-        font-size: 0.92rem;
-        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.95rem;
         white-space: nowrap;
+      }
+
+      .bottom-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .sound-cmd {
+        font-family: ui-monospace, monospace;
+        background: var(--codebg);
+        padding: 8px 12px;
+        border-radius: 8px;
+        color: var(--green);
+        font-size: 0.98em;
+        flex: 1;
+        word-break: break-all;
       }
 
       .copy-btn {
         background: var(--accent);
         color: #0f1320;
         border: none;
-        padding: 7px 16px;
-        border-radius: 6px;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 1.05rem;
+        font-weight: 600;
         cursor: pointer;
-        font-weight: 500;
-        transition: all 0.18s;
-      }
-
-      .copy-btn:hover {
-        background: var(--accent-dark);
+        min-width: 100px;
+        text-align: center;
       }
 
       .copy-btn.copied {
@@ -257,118 +354,56 @@
         color: white;
       }
 
-      .no-results {
-        padding: 2rem;
-        text-align: center;
-        color: var(--text-muted);
-        font-size: 1.1rem;
-      }
-
-      @media (min-width: 980px) {
-        .accordion {
-          display: none;
-        }
-
-        .table-container {
-          margin: 1.5rem 0 3rem;
-          border: 1px solid var(--border);
-          border-radius: 8px;
-          overflow: hidden;
-          background: var(--card);
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        th,
-        td {
-          padding: 14px 18px;
-          text-align: left;
-        }
-
-        th {
-          background: #11141f;
-          color: #e8ecff;
-          font-weight: 600;
-        }
-
-        tr:hover {
-          background: #282e4a;
-        }
-
-        .cmd-cell {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .points {
-          background: transparent;
-          color: var(--green);
-          text-align: center;
-          font-weight: 600;
-        }
-
-        .search-container {
-          margin: 1rem auto 1.8rem;
-        }
-      }
-
-      @media (max-width: 979px) {
-        .table-container {
-          display: none;
-        }
-      }
-
       footer {
-        flex-shrink: 0;
         background: var(--navbar);
         color: #c0c8ff;
         text-align: center;
-        padding: 1.8rem;
-        font-size: 0.94rem;
+        padding: 1.6rem 1rem;
+        font-size: 0.92rem;
         border-top: 1px solid var(--border);
       }
 
       .material-icons,
       .material-symbols-outlined {
-        font-size: 1.18rem;
+        font-size: 1.3rem;
         vertical-align: middle;
+      }
+
+      .no-results {
+        padding: 3rem 1rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 1.2rem;
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="container">
-        <h1>Chatsounds List</h1>
-        <p>
-          Click row or <span class="material-icons">content_copy</span> to copy
-          <code>!redeem</code> command
-        </p>
-      </div>
+      <h1>Chatsounds List</h1>
+      <p>
+        Tap sound or <span class="material-icons">content_copy</span> to copy
+        <code>!redeem</code>
+      </p>
     </header>
 
-    <div class="search-container">
-      <div class="search-wrapper">
-        <span class="material-icons search-icon">search</span>
-        <input
-          type="text"
-          id="searchInput"
-          class="search-input"
-          placeholder="Search sounds (e.g. wah, bell)..."
-        />
-      </div>
-    </div>
-
     <div class="navbar">
-      <div class="container">
-        <div class="navbar-inner" id="navbarInner"></div>
+      <div class="navbar-inner">
+        <div class="nav-links" id="navbarInner"></div>
+        <div class="search-container">
+          <div class="search-wrapper">
+            <span class="material-icons search-icon">search</span>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Search sounds…"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
-    <main class="container">
+    <main>
       <div class="accordion" id="accordion"></div>
 
       <div class="table-container">
@@ -544,7 +579,7 @@
         const header = document.createElement("div");
         header.className = "accordion-header";
         header.dataset.category = cat;
-        header.innerHTML = `<span class="material-symbols-outlined">expand_more</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)} <span class="material-symbols-outlined">chevron_right</span>`;
+        header.innerHTML = `<span class="material-symbols-outlined">expand_more</span> ${cat.charAt(0).toUpperCase() + cat.slice(1)}`;
 
         const content = document.createElement("div");
         content.className = "accordion-content";
@@ -556,11 +591,15 @@
           item.className = "sound-item";
           item.dataset.name = s.name.toLowerCase();
           item.innerHTML = `
-            <span class="sound-name">${s.name}</span>
-            <code class="sound-cmd">${cmd}</code>
-            <span class="points">? ? ?</span>
-            <button class="copy-btn">Copy</button>
-        `;
+      <div class="top-row">
+        <span class="sound-name">${s.name}</span>
+        <span class="points">? ? ?</span>
+      </div>
+      <div class="bottom-row">
+        <code class="sound-cmd">${cmd}</code>
+        <button class="copy-btn">Copy</button>
+      </div>
+    `;
           addCopy(item, cmd);
           content.appendChild(item);
         });
@@ -568,7 +607,7 @@
         header.addEventListener("click", () => {
           const active = content.classList.toggle("active");
           header.classList.toggle("active", active);
-          header.querySelectorAll(".material-symbols-outlined")[0].textContent =
+          header.querySelector(".material-symbols-outlined").textContent =
             active ? "expand_less" : "expand_more";
         });
 
@@ -592,7 +631,7 @@
             setTimeout(() => {
               btn.textContent = "Copy";
               btn.classList.remove("copied");
-            }, 1500);
+            }, 1600);
           });
         };
 
@@ -600,7 +639,6 @@
           e.stopPropagation();
           copy();
         });
-
         el.addEventListener("click", (e) => {
           if (e.target.tagName !== "BUTTON") copy();
         });
@@ -615,9 +653,9 @@
             showTable(activeCat);
             noResultsDesktop.style.display = "none";
           } else {
-            document.querySelectorAll(".accordion-content").forEach((c) => {
-              c.classList.remove("search-active");
-            });
+            document
+              .querySelectorAll(".accordion-content")
+              .forEach((c) => c.classList.remove("search-active"));
             const activeContent = document.querySelector(
               `.accordion-content[data-category="${activeCat}"]`,
             );
@@ -630,11 +668,11 @@
 
         if (window.innerWidth < 980) {
           document.querySelectorAll(".accordion-content").forEach((content) => {
-            let visibleInCat = 0;
+            let visible = 0;
             content.querySelectorAll(".sound-item").forEach((item) => {
               if (item.dataset.name.includes(term)) {
                 item.style.display = "";
-                visibleInCat++;
+                visible++;
                 hasResults = true;
               } else {
                 item.style.display = "none";
@@ -643,11 +681,9 @@
             const header = document.querySelector(
               `.accordion-header[data-category="${content.dataset.category}"]`,
             );
-            if (visibleInCat > 0) {
+            if (visible > 0) {
               content.classList.add("search-active");
-              if (!content.classList.contains("active")) {
-                header.click();
-              }
+              if (!content.classList.contains("active")) header.click();
             } else {
               content.classList.remove("search-active");
             }
@@ -660,13 +696,13 @@
               const cmd = `!redeem ${s.name}`;
               const tr = document.createElement("tr");
               tr.innerHTML = `
-                    <td class="cmd-cell">
-                        <code class="sound-cmd">${cmd}</code>
-                        <button class="copy-btn">Copy</button>
-                    </td>
-                    <td>${s.name}</td>
-                    <td style="text-align:center"><span class="points">? ? ?</span></td>
-                `;
+        <td class="cmd-cell">
+          <code class="sound-cmd">${cmd}</code>
+          <button class="copy-btn">Copy</button>
+        </td>
+        <td>${s.name}</td>
+        <td style="text-align:center"><span class="points">? ? ?</span></td>
+      `;
               addCopy(tr, cmd);
               tableBody.appendChild(tr);
               hasResults = true;
@@ -682,13 +718,13 @@
           const cmd = `!redeem ${s.name}`;
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td class="cmd-cell">
-                <code class="sound-cmd">${cmd}</code>
-                <button class="copy-btn">Copy</button>
-            </td>
-            <td>${s.name}</td>
-            <td style="text-align:center"><span class="points">? ? ?</span></td>
-        `;
+      <td class="cmd-cell">
+        <code class="sound-cmd">${cmd}</code>
+        <button class="copy-btn">Copy</button>
+      </td>
+      <td>${s.name}</td>
+      <td style="text-align:center"><span class="points">? ? ?</span></td>
+    `;
           addCopy(tr, cmd);
           tableBody.appendChild(tr);
         });
@@ -698,11 +734,8 @@
       searchInput.addEventListener("input", updateView);
 
       if (window.innerWidth >= 980) showTable(activeCat);
-
       window.addEventListener("resize", () => {
-        if (window.innerWidth >= 980) {
-          updateView();
-        }
+        if (window.innerWidth >= 980) updateView();
       });
     </script>
   </body>
